@@ -80,7 +80,7 @@ class MvcTest {
                 .param("sldp", Cat.class.getName())
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Cat\",\"obj\":{\"name\":\"test name\",\"age\":12}}"))
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Cat\",\"obj\":{\"name\":\"test name\",\"age\":12,\"speed\":\"sp\"}}"))
                 .andDo(print());
     }
 
