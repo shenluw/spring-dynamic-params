@@ -1,0 +1,4 @@
+rootProject.name = 'sldp'
+
+include "sl-dynamic-params-starter"
+

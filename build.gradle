@@ -1,0 +1,38 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.+'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/mvn/repository/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/mvn/repository/' }
+        mavenCentral()
+    }
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    dependencies {
+        runtime 'org.springframework.boot:spring-boot-devtools'
+//
+//        runtime('javax.xml.bind:jaxb-api:+')
+//        runtime 'com.sun.xml.bind:jaxb-impl:+'
+//        runtime 'com.sun.xml.bind:jaxb-core:+'
+//        runtime 'javax.activation:activation:+'
+
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile("org.junit.jupiter:junit-jupiter-api")
+    }
+}
