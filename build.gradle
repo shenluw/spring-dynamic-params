@@ -21,16 +21,11 @@ subprojects {
         mavenCentral()
     }
 
-    sourceCompatibility = 11
-    targetCompatibility = 11
+    sourceCompatibility = 8
+    targetCompatibility = 8
 
     dependencies {
         runtime 'org.springframework.boot:spring-boot-devtools'
-//
-//        runtime('javax.xml.bind:jaxb-api:+')
-//        runtime 'com.sun.xml.bind:jaxb-impl:+'
-//        runtime 'com.sun.xml.bind:jaxb-core:+'
-//        runtime 'javax.activation:activation:+'
 
         testCompile('org.springframework.boot:spring-boot-starter-test')
         testCompile("org.junit.jupiter:junit-jupiter-api")
