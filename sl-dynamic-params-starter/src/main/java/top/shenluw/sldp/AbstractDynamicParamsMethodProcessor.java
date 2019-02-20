@@ -28,6 +28,8 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
 
     private boolean defaultProcessor;
 
+    private TypeNameAliasResolver typeNameAliasResolver;
+
     public boolean isDefaultProcessor() {
         return defaultProcessor;
     }
@@ -42,6 +44,14 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public TypeNameAliasResolver getTypeNameAliasResolver() {
+        return typeNameAliasResolver;
+    }
+
+    public void setTypeNameAliasResolver(TypeNameAliasResolver typeNameAliasResolver) {
+        this.typeNameAliasResolver = typeNameAliasResolver;
     }
 
     public abstract ModelType getModelType();
@@ -82,7 +92,11 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
                 typeName = name;
             }
         }
-        return webRequest.getParameter(typeName);
+        String className = webRequest.getParameter(typeName);
+        if (typeNameAliasResolver != null) {
+            return typeNameAliasResolver.resolver(className);
+        }
+        return className;
     }
 
     @Override

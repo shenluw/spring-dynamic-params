@@ -3,6 +3,8 @@ package top.shenluw.sldp;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import top.shenluw.sldp.processor.WebDataBinderDynamicParamsMethodProcessor;
 
+import java.util.Map;
+
 /**
  * @author Shenluw
  * 创建日期：2019/2/20 11:32
@@ -14,6 +16,7 @@ public class SldpProperties {
     private String typeName = Constants.TYPE_NAME;
     private String jsonDataName = Constants.JSON_DATA_NAME;
     private String defaultProcessor = WebDataBinderDynamicParamsMethodProcessor.class.getName();
+    private Map<String, String> typeAlias;
 
     public boolean isEnable() {
         return enable;
@@ -47,4 +50,11 @@ public class SldpProperties {
         this.defaultProcessor = defaultProcessor;
     }
 
+    public Map<String, String> getTypeAlias() {
+        return typeAlias;
+    }
+
+    public void setTypeAlias(Map<String, String> typeAlias) {
+        this.typeAlias = typeAlias;
+    }
 }

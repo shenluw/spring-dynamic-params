@@ -162,4 +162,17 @@ class MvcTest {
                 .andExpect(status().is(400))
                 .andDo(print());
     }
+
+    @Test
+    void test11() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/1")
+                .param("name", "test name")
+                .param("age", "12")
+                .param("sldp", "myName")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Dog\",\"obj\":{\"name\":\"test name\",\"age\":12}}"))
+                .andDo(print());
+    }
+
 }

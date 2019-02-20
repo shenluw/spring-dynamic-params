@@ -42,21 +42,30 @@ public class SldpAutoConfiguration {
         };
     }
 
+    private void configureDynamicParamsMethodProcessor(AbstractDynamicParamsMethodProcessor processor, TypeNameAliasResolver aliasResolver) {
+        processor.setTypeName(sldpProperties.getTypeName());
+        processor.setTypeNameAliasResolver(aliasResolver);
+        processor.setDefaultProcessor(Objects.equals(processor.getClass().getName(), sldpProperties.getDefaultProcessor()));
+    }
+
     @Bean
     @ConditionalOnBean({ObjectMapper.class})
-    public JsonDynamicParamsMethodProcessor jacksonDynamicParamsMethodProcessor(ObjectMapper objectMapper) {
+    public JsonDynamicParamsMethodProcessor jacksonDynamicParamsMethodProcessor(ObjectMapper objectMapper, TypeNameAliasResolver aliasResolver) {
         JacksonDynamicParamsMethodProcessor processor = new JacksonDynamicParamsMethodProcessor(sldpProperties.getJsonDataName(), objectMapper);
-        processor.setTypeName(sldpProperties.getTypeName());
-        processor.setDefaultProcessor(Objects.equals(processor.getClass().getName(), sldpProperties.getDefaultProcessor()));
+        configureDynamicParamsMethodProcessor(processor, aliasResolver);
         return processor;
     }
 
     @Bean
-    public WebDataBinderDynamicParamsMethodProcessor webDataBinderDynamicParamsMethodProcessor() {
+    public WebDataBinderDynamicParamsMethodProcessor webDataBinderDynamicParamsMethodProcessor(TypeNameAliasResolver aliasResolver) {
         WebDataBinderDynamicParamsMethodProcessor processor = new WebDataBinderDynamicParamsMethodProcessor();
-        processor.setTypeName(sldpProperties.getTypeName());
-        processor.setDefaultProcessor(Objects.equals(processor.getClass().getName(), sldpProperties.getDefaultProcessor()));
+        configureDynamicParamsMethodProcessor(processor, aliasResolver);
         return processor;
+    }
+
+    @Bean
+    public TypeNameAliasResolver typeNameAliasResolver() {
+        return new TypeNameAliasResolver(sldpProperties.getTypeAlias());
     }
 
 }

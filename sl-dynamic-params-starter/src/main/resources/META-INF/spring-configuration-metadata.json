@@ -24,6 +24,11 @@
       "sourceType": "top.shenluw.sldp.SldpProperties"
     },
     {
+      "name": "sldp.type-alias",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    },
+    {
       "name": "sldp.type-name",
       "type": "java.lang.String",
       "sourceType": "top.shenluw.sldp.SldpProperties"

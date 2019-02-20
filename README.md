@@ -151,6 +151,19 @@ public class TestController {
 
     http://xxxxx/1?name=test&age=12&face=mm&speed=1233&height=11&a=top.shenluw.sldp.BDog&b=top.shenluw.sldp.Cat
 
+#### 为类型设置别名
+修改yaml,将top.shenluw.sldp.Dog别名修改为myName
+~~~yaml
+sldp:
+  # 为类型设置别名
+  type-alias:
+      myName: top.shenluw.sldp.Dog
+~~~
+
+把请求参数中的sldp值修改为myName即可实现
+
+    http://xxxxx/1?sldpJson={"name":"test name","age":12}&sldp=myName
+
 
 #### 设置默认配置
 
@@ -163,4 +176,7 @@ sldp:
   json-data-name: mydata
   # 设置携带实际类型的参数名称，就是把上面的sldp改为mytype
   type-name: mytype
+  # 为类型设置别名
+  type-alias:
+      myName: top.shenluw.sldp.Dog
 ~~~

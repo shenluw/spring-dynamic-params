@@ -9,3 +9,8 @@ logging:
 spring:
   jackson:
     default-property-inclusion: non_null
+
+
+sldp:
+  type-alias:
+    myName: top.shenluw.sldp.Dog
