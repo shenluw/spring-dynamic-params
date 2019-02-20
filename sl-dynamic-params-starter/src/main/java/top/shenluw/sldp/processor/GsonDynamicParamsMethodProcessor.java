@@ -1,6 +1,7 @@
 package top.shenluw.sldp.processor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import org.slf4j.Logger;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ClassUtils;
@@ -9,22 +10,20 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.io.IOException;
-
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * @author Shenluw
- * 创建日期：2019/2/20 10:47
+ * 创建日期：2019/2/20 18:01
  */
-public class JacksonDynamicParamsMethodProcessor extends JsonDynamicParamsMethodProcessor {
-    private final static Logger log = getLogger(JacksonDynamicParamsMethodProcessor.class);
+public class GsonDynamicParamsMethodProcessor extends JsonDynamicParamsMethodProcessor {
+    private final static Logger log = getLogger(GsonDynamicParamsMethodProcessor.class);
 
-    private ObjectMapper objectMapper;
+    private Gson gson;
 
-    public JacksonDynamicParamsMethodProcessor(String dataName, ObjectMapper objectMapper) {
+    public GsonDynamicParamsMethodProcessor(String dataName, Gson gson) {
         super(dataName);
-        this.objectMapper = objectMapper;
+        this.gson = gson;
     }
 
     @Override
@@ -33,14 +32,13 @@ public class JacksonDynamicParamsMethodProcessor extends JsonDynamicParamsMethod
 
         String data = webRequest.getParameter(getRealDataName(parameter, mavContainer, webRequest));
         try {
-            Object obj = objectMapper.readValue(data, type);
+            Object obj = gson.fromJson(data, type);
             WebDataBinder binder = binderFactory.createBinder(webRequest, obj, parameter.getParameterName());
             validate(binder, parameter, mavContainer, webRequest);
             return obj;
-        } catch (IOException e) {
+        } catch (JsonParseException e) {
             log.warn("sldp json data not valid");
             throw e;
         }
     }
-
 }

@@ -41,7 +41,6 @@ public class WebDataBinderDynamicParamsMethodProcessor extends AbstractDynamicPa
         ServletRequestDataBinder servletBinder = (ServletRequestDataBinder) binder;
         servletBinder.bind(servletRequest);
         validate(binder, parameter, mavContainer, webRequest);
-        log.info("in  {}  {} {}", obj, obj.hashCode(), binder.getTarget());
         return obj;
     }
 
