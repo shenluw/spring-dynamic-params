@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "name": "sldp",
+      "type": "top.shenluw.sldp.SldpProperties",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "sldp.default-processor",
+      "type": "java.lang.String",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    },
+    {
+      "name": "sldp.enable",
+      "type": "java.lang.Boolean",
+      "sourceType": "top.shenluw.sldp.SldpProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "sldp.json-data-name",
+      "type": "java.lang.String",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    },
+    {
+      "name": "sldp.type-name",
+      "type": "java.lang.String",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    }
+  ],
+  "hints": []
+}

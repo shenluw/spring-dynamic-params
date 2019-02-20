@@ -1,13 +1,14 @@
 apply plugin: 'java'
 
 jar {
-	enabled = true
+    enabled = true
 }
 
 bootJar {
-	enabled = false
+    enabled = false
 }
 
 dependencies {
-	compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
