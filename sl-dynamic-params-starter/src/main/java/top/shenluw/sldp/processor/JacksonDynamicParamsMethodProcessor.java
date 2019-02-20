@@ -7,7 +7,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class JacksonDynamicParamsMethodProcessor extends JsonDynamicParamsMethod
     protected Object bind(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Class<?> type = ClassUtils.forName(className, this.getClass().getClassLoader());
 
-        String data = (String) webRequest.getAttribute(getDataName(), RequestAttributes.SCOPE_REQUEST);
+        String data = webRequest.getParameter(getRealDataName(parameter, mavContainer, webRequest));
         try {
             Object obj = objectMapper.readValue(data, type);
             WebDataBinder binder = binderFactory.createBinder(webRequest, obj, parameter.getParameterName());

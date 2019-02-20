@@ -4,6 +4,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +14,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import top.shenluw.sldp.annotation.Sldp;
-import top.shenluw.sldp.processor.DynamicParamsProcessorUtils;
 
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -78,8 +78,9 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
         }
         if (sldp != null) {
             String name = sldp.name();
-            Assert.hasText(name, "sldp value must be has text ");
-            typeName = name;
+            if (!"".equals(name)) {
+                typeName = name;
+            }
         }
         return webRequest.getParameter(typeName);
     }
@@ -87,6 +88,13 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String realClassName = getRealClass(parameter, mavContainer, webRequest);
+        Assert.hasText(realClassName, "sldp requst must has real class type");
+
+        Class<?> realClass = ClassUtils.forName(realClassName, getClass().getClassLoader());
+        if (!ClassUtils.isAssignable(parameter.getParameterType(), realClass)) {
+            throw new IllegalStateException("sldp real class [ " + realClassName + " ] not cast [ " + parameter.getParameterType().getName() + " ]");
+        }
+
         Assert.hasText(realClassName, "sldp real class must be has text ");
         return bind(realClassName, parameter, mavContainer, webRequest, binderFactory);
     }

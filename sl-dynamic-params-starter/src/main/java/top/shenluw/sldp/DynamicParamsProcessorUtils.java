@@ -1,6 +1,5 @@
-package top.shenluw.sldp.processor;
+package top.shenluw.sldp;
 
-import top.shenluw.sldp.ModelType;
 import top.shenluw.sldp.annotation.Sldp;
 
 /**
