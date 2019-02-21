@@ -58,22 +58,6 @@ public class SldpAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean({ObjectMapper.class})
-    public JsonDynamicParamsMethodProcessor jacksonDynamicParamsMethodProcessor(ObjectMapper objectMapper, TypeNameAliasResolver aliasResolver) {
-        JacksonDynamicParamsMethodProcessor processor = new JacksonDynamicParamsMethodProcessor(sldpProperties.getJsonDataName(), objectMapper);
-        configureDynamicParamsMethodProcessor(processor, aliasResolver);
-        return processor;
-    }
-
-    @Bean
-    @ConditionalOnBean({Gson.class})
-    public GsonDynamicParamsMethodProcessor gsonDynamicParamsMethodProcessor(Gson gson, TypeNameAliasResolver aliasResolver) {
-        GsonDynamicParamsMethodProcessor processor = new GsonDynamicParamsMethodProcessor(sldpProperties.getJsonDataName(), gson);
-        configureDynamicParamsMethodProcessor(processor, aliasResolver);
-        return processor;
-    }
-
-    @Bean
     public WebDataBinderDynamicParamsMethodProcessor webDataBinderDynamicParamsMethodProcessor(TypeNameAliasResolver aliasResolver) {
         WebDataBinderDynamicParamsMethodProcessor processor = new WebDataBinderDynamicParamsMethodProcessor();
         configureDynamicParamsMethodProcessor(processor, aliasResolver);
@@ -83,6 +67,31 @@ public class SldpAutoConfiguration {
     @Bean
     public TypeNameAliasResolver typeNameAliasResolver() {
         return new TypeNameAliasResolver(sldpProperties.getTypeAlias());
+    }
+
+    @Configuration
+    @ConditionalOnBean({Gson.class})
+    class GsonConfiguration {
+
+        @Bean
+        public GsonDynamicParamsMethodProcessor gsonDynamicParamsMethodProcessor(Gson gson, TypeNameAliasResolver aliasResolver) {
+            GsonDynamicParamsMethodProcessor processor = new GsonDynamicParamsMethodProcessor(sldpProperties.getJsonDataName(), gson);
+            configureDynamicParamsMethodProcessor(processor, aliasResolver);
+            return processor;
+        }
+    }
+
+    @Configuration
+    @ConditionalOnBean({ObjectMapper.class})
+    class JacksonConfiguration {
+
+        @Bean
+        public JsonDynamicParamsMethodProcessor jacksonDynamicParamsMethodProcessor(ObjectMapper objectMapper, TypeNameAliasResolver aliasResolver) {
+            JacksonDynamicParamsMethodProcessor processor = new JacksonDynamicParamsMethodProcessor(sldpProperties.getJsonDataName(), objectMapper);
+            configureDynamicParamsMethodProcessor(processor, aliasResolver);
+            return processor;
+        }
+
     }
 
 }
