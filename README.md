@@ -164,6 +164,26 @@ sldp:
 
     http://xxxxx/1?sldpJson={"name":"test name","age":12}&sldp=myName
 
+#### 添加加密设置
+
+~~~yaml
+sldp:
+  # 开启加密，默认关闭
+  enable-security: true
+  # 开启加密后是否使用全局加密，默认只对设置了SlSecurity注解的方法使用加密
+  default-security: true
+~~~
+
+当前加密只支持json方式，默认只提供了base64的测试样例
+
+添加新的加密方法只需要实现Encryptor接口，然后配置成bean既可以
+~~~java
+@Bean
+public Encryptor myEncryptor(){
+    return MyEncryptor();
+}
+~~~
+
 
 #### 设置默认配置
 
