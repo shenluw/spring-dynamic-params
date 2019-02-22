@@ -13,6 +13,8 @@ import java.util.Map;
 public class SldpProperties {
 
     private boolean enable = true;
+    private boolean enableSecurity = false;
+    private boolean defaultSecurity = false;
     private String typeName = Constants.TYPE_NAME;
     private String jsonDataName = Constants.JSON_DATA_NAME;
     private String defaultProcessor = WebDataBinderDynamicParamsMethodProcessor.class.getName();
@@ -56,5 +58,21 @@ public class SldpProperties {
 
     public void setTypeAlias(Map<String, String> typeAlias) {
         this.typeAlias = typeAlias;
+    }
+
+    public boolean isEnableSecurity() {
+        return enableSecurity;
+    }
+
+    public void setEnableSecurity(boolean enableSecurity) {
+        this.enableSecurity = enableSecurity;
+    }
+
+    public boolean isDefaultSecurity() {
+        return defaultSecurity;
+    }
+
+    public void setDefaultSecurity(boolean defaultSecurity) {
+        this.defaultSecurity = defaultSecurity;
     }
 }

@@ -11,6 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import top.shenluw.sldp.encrypt.B64Encryptor;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -169,6 +172,17 @@ class MvcTest {
                 .param("name", "test name")
                 .param("age", "12")
                 .param("sldp", "myName")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Dog\",\"obj\":{\"name\":\"test name\",\"age\":12}}"))
+                .andDo(print());
+    }
+
+    @Test
+    void test12() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/7")
+                .param("sldpJson", new String(new B64Encryptor(StandardCharsets.UTF_8).encrypt("{\"name\":\"test name\",\"age\":12}")))
+                .param("sldp", Dog.class.getName())
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Dog\",\"obj\":{\"name\":\"test name\",\"age\":12}}"))

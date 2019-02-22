@@ -6,7 +6,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import top.shenluw.sldp.AbstractDynamicParamsMethodProcessor;
+import top.shenluw.sldp.AbstractSecureDynamicParamsMethodProcessor;
 import top.shenluw.sldp.ModelType;
 import top.shenluw.sldp.annotation.Sldp;
 
@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Shenluw
  * 创建日期：2019/2/20 10:47
  */
-public abstract class JsonDynamicParamsMethodProcessor extends AbstractDynamicParamsMethodProcessor {
+public abstract class JsonDynamicParamsMethodProcessor extends AbstractSecureDynamicParamsMethodProcessor {
 
     private String dataName;
 

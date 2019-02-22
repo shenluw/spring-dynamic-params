@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.shenluw.sldp.annotation.SlSecurity;
 import top.shenluw.sldp.annotation.Sldp;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -41,7 +43,7 @@ public class TestController {
     @RequestMapping("/2")
     public List<M> test2(@Sldp(name = "a") Animal a, @Sldp(name = "b") Animal b) {
         log.info("test2: {} {}", a, b);
-        return List.of(new M(a), new M(b));
+        return Arrays.asList(new M(a), new M(b));
     }
 
     @RequestMapping("/3")
@@ -65,6 +67,12 @@ public class TestController {
     @RequestMapping("/6")
     public M test6(@Sldp(type = ModelType.Json) @Validated Animal a) {
         log.info("test6: {}", a);
+        return new M(a);
+    }
+
+    @RequestMapping("/7")
+    public M test7(@Sldp(type = ModelType.Json) @SlSecurity Animal a) {
+        log.info("test7: {}", a);
         return new M(a);
     }
 

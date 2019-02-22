@@ -14,3 +14,4 @@ spring:
 sldp:
   type-alias:
     myName: top.shenluw.sldp.Dog
+  enable-security: true

@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import top.shenluw.sldp.SldpException;
 
 import java.io.IOException;
 
@@ -32,14 +34,24 @@ public class JacksonDynamicParamsMethodProcessor extends JsonDynamicParamsMethod
         Class<?> type = ClassUtils.forName(className, this.getClass().getClassLoader());
 
         String data = webRequest.getParameter(getRealDataName(parameter, mavContainer, webRequest));
+        if (!StringUtils.hasText(data)) {
+            WebDataBinder binder = binderFactory.createBinder(webRequest, null, parameter.getParameterName());
+            validate(binder, parameter, mavContainer, webRequest);
+            return null;
+        }
         try {
-            Object obj = objectMapper.readValue(data, type);
+            Object obj;
+            if (isSecure(parameter, type)) {
+                byte[] decrypt = getEncryptor().decrypt(data);
+                obj = objectMapper.readValue(decrypt, type);
+            } else {
+                obj = objectMapper.readValue(data, type);
+            }
             WebDataBinder binder = binderFactory.createBinder(webRequest, obj, parameter.getParameterName());
             validate(binder, parameter, mavContainer, webRequest);
             return obj;
         } catch (IOException e) {
-            log.warn("sldp json data not valid");
-            throw e;
+            throw new SldpException("sldp json data not valid", e);
         }
     }
 

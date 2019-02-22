@@ -13,10 +13,22 @@
       "sourceType": "top.shenluw.sldp.SldpProperties"
     },
     {
+      "name": "sldp.default-security",
+      "type": "java.lang.Boolean",
+      "sourceType": "top.shenluw.sldp.SldpProperties",
+      "defaultValue": false
+    },
+    {
       "name": "sldp.enable",
       "type": "java.lang.Boolean",
       "sourceType": "top.shenluw.sldp.SldpProperties",
       "defaultValue": true
+    },
+    {
+      "name": "sldp.enable-security",
+      "type": "java.lang.Boolean",
+      "sourceType": "top.shenluw.sldp.SldpProperties",
+      "defaultValue": false
     },
     {
       "name": "sldp.json-data-name",
