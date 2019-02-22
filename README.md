@@ -4,6 +4,22 @@ spring boot mvc参数类型转换，支持转换为子类对象访问以及参�
 
 ### 使用示例：
 
+#### 添加依赖
+
+~~~groovy
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+}	
+dependencies {
+        // 低版本gradle使用
+        // compile 'com.gitee.luw1683:spring-dynamic-params:Tag'
+        implementation 'com.gitee.luw1683:spring-dynamic-params:0.1.1'
+}
+~~~
+
 #### 方法一
 - 对实体对象添加@Sldp注解
 ~~~java
