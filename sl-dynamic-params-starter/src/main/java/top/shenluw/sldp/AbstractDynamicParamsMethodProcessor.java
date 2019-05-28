@@ -104,7 +104,7 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
         String realClassName = getRealClass(parameter, mavContainer, webRequest);
         Assert.hasText(realClassName, "sldp requst must has real class type");
 
-        Class<?> realClass = ClassUtils.forName(realClassName, getClass().getClassLoader());
+        Class<?> realClass = ClassUtils.forName(realClassName, ClassUtils.getDefaultClassLoader());
         if (!ClassUtils.isAssignable(parameter.getParameterType(), realClass)) {
             throw new IllegalStateException("sldp real class [ " + realClassName + " ] not cast [ " + parameter.getParameterType().getName() + " ]");
         }
