@@ -2,9 +2,6 @@ package top.shenluw.sldp;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.support.WebDataBinderFactory;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.ModelAndViewContainer;
 import top.shenluw.sldp.annotation.SlSecurity;
 
 import java.util.Set;
@@ -34,8 +31,6 @@ public abstract class AbstractSecureDynamicParamsMethodProcessor extends Abstrac
     public void setDefaultSecure(boolean defaultSecure) {
         this.defaultSecure = defaultSecure;
     }
-
-    protected abstract Object bind(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception;
 
     protected final boolean isSecure(MethodParameter parameter, Class realClass) {
         if (encryptor == null) {

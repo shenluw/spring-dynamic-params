@@ -1,5 +1,6 @@
 package top.shenluw.sldp;
 
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
@@ -22,13 +23,15 @@ import java.util.Set;
  * @author Shenluw
  * 创建日期：2019/2/18 17:38
  */
-public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMethodArgumentResolver {
+public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMethodArgumentResolver, BeanClassLoaderAware {
 
     private String typeName;
 
     private boolean defaultProcessor;
 
     private TypeNameAliasResolver typeNameAliasResolver;
+
+    private ClassLoader classLoader;
 
     public boolean isDefaultProcessor() {
         return defaultProcessor;
@@ -55,6 +58,11 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
     }
 
     public abstract ModelType getModelType();
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -104,16 +112,16 @@ public abstract class AbstractDynamicParamsMethodProcessor implements HandlerMet
         String realClassName = getRealClass(parameter, mavContainer, webRequest);
         Assert.hasText(realClassName, "sldp requst must has real class type");
 
-        Class<?> realClass = ClassUtils.forName(realClassName, ClassUtils.getDefaultClassLoader());
+        Class<?> realClass = ClassUtils.forName(realClassName, classLoader);
         if (!ClassUtils.isAssignable(parameter.getParameterType(), realClass)) {
             throw new IllegalStateException("sldp real class [ " + realClassName + " ] not cast [ " + parameter.getParameterType().getName() + " ]");
         }
 
         Assert.hasText(realClassName, "sldp real class must be has text ");
-        return bind(realClassName, parameter, mavContainer, webRequest, binderFactory);
+        return bind(realClass, parameter, mavContainer, webRequest, binderFactory);
     }
 
-    protected abstract Object bind(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception;
+    protected abstract Object bind(Class<?> targetClass, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception;
 
     protected void validate(WebDataBinder binder, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
         validateIfApplicable(binder, parameter);

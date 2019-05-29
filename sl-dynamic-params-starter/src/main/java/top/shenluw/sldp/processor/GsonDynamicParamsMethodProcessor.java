@@ -4,14 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import org.slf4j.Logger;
 import org.springframework.core.MethodParameter;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.ModelAndViewContainer;
 import top.shenluw.sldp.Encryptor;
 import top.shenluw.sldp.SldpException;
+import top.shenluw.sldp.SldpJsonException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
@@ -33,26 +29,16 @@ public class GsonDynamicParamsMethodProcessor extends JsonDynamicParamsMethodPro
     }
 
     @Override
-    protected Object bind(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        Class<?> type = ClassUtils.forName(className, this.getClass().getClassLoader());
-
-        String data = webRequest.getParameter(getRealDataName(parameter, mavContainer, webRequest));
-        if (!StringUtils.hasText(data)) {
-            WebDataBinder binder = binderFactory.createBinder(webRequest, null, parameter.getParameterName());
-            validate(binder, parameter, mavContainer, webRequest);
-            return null;
-        }
+    protected Object jsonToObject(Class<?> targetClass, String jsonData, MethodParameter parameter, NativeWebRequest webRequest) throws SldpJsonException {
         try {
             Object obj;
-            if (isSecure(parameter, type)) {
+            if (isSecure(parameter, targetClass)) {
                 Encryptor encryptor = getEncryptor();
-                byte[] bytes = encryptor.decrypt(data);
-                obj = gson.fromJson(new InputStreamReader(new ByteArrayInputStream(bytes), encryptor.getCharset()), type);
+                byte[] bytes = encryptor.decrypt(jsonData);
+                obj = gson.fromJson(new InputStreamReader(new ByteArrayInputStream(bytes), encryptor.getCharset()), targetClass);
             } else {
-                obj = gson.fromJson(data, type);
+                obj = gson.fromJson(jsonData, targetClass);
             }
-            WebDataBinder binder = binderFactory.createBinder(webRequest, obj, parameter.getParameterName());
-            validate(binder, parameter, mavContainer, webRequest);
             return obj;
         } catch (JsonParseException e) {
             throw new SldpException("sldp json data not valid", e);

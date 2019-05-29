@@ -32,8 +32,8 @@ public class WebDataBinderDynamicParamsMethodProcessor extends AbstractDynamicPa
     }
 
     @Override
-    protected Object bind(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        Object obj = createObject(className, parameter, mavContainer, webRequest);
+    protected Object bind(Class<?> targetClass, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        Object obj = createObject(targetClass, parameter, mavContainer, webRequest);
         WebDataBinder binder = binderFactory.createBinder(webRequest, obj, parameter.getParameterName());
         ServletRequest servletRequest = webRequest.getNativeRequest(ServletRequest.class);
         Assert.state(servletRequest != null, "No ServletRequest");
@@ -44,9 +44,8 @@ public class WebDataBinderDynamicParamsMethodProcessor extends AbstractDynamicPa
         return obj;
     }
 
-    protected Object createObject(String className, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) {
+    protected Object createObject(Class<?> realType, MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) {
         try {
-            Class<?> realType = ClassUtils.forName(className, getClass().getClassLoader());
             Constructor<?> constructor = BeanUtils.findPrimaryConstructor(realType);
             if (constructor == null) {
                 constructor = realType.getConstructor();
@@ -55,7 +54,7 @@ public class WebDataBinderDynamicParamsMethodProcessor extends AbstractDynamicPa
             }
             Assert.notNull(constructor, "sldp real type must has no args constructor");
             return constructor.newInstance();
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             log.warn("sldp create object error: {}", e.getMessage());
         }
         return null;
