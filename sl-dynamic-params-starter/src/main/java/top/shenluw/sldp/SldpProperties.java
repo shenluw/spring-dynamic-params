@@ -3,6 +3,7 @@ package top.shenluw.sldp;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import top.shenluw.sldp.processor.WebDataBinderDynamicParamsMethodProcessor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,7 +19,7 @@ public class SldpProperties {
     private String typeName = Constants.TYPE_NAME;
     private String jsonDataName = Constants.JSON_DATA_NAME;
     private String defaultProcessor = WebDataBinderDynamicParamsMethodProcessor.class.getName();
-    private Map<String, String> typeAlias;
+    private Map<String, String> typeAlias = new HashMap<>();
 
     public boolean isEnable() {
         return enable;
