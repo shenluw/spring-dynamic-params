@@ -16,7 +16,8 @@ allprojects {
 dependencies {
         // 低版本gradle使用
         // compile 'com.gitee.luw1683:spring-dynamic-params:Tag'
-        implementation 'com.gitee.luw1683:spring-dynamic-params:0.1.1'
+        // 版本号查看仓库tag
+        implementation 'com.gitee.luw1683:spring-dynamic-params:0.1.3'
 }
 ~~~
 
