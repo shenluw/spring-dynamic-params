@@ -36,6 +36,11 @@
       "sourceType": "top.shenluw.sldp.SldpProperties"
     },
     {
+      "name": "sldp.json-type",
+      "type": "top.shenluw.sldp.SldpProperties$JsonType",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
+    },
+    {
       "name": "sldp.type-alias",
       "type": "java.util.Map<java.lang.String,java.lang.String>",
       "sourceType": "top.shenluw.sldp.SldpProperties"

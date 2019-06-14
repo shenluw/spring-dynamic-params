@@ -20,6 +20,7 @@ public class SldpProperties {
     private String jsonDataName = Constants.JSON_DATA_NAME;
     private String defaultProcessor = WebDataBinderDynamicParamsMethodProcessor.class.getName();
     private Map<String, String> typeAlias = new HashMap<>();
+    private JsonType jsonType = JsonType.JACKSON2;
 
     public boolean isEnable() {
         return enable;
@@ -76,4 +77,17 @@ public class SldpProperties {
     public void setDefaultSecurity(boolean defaultSecurity) {
         this.defaultSecurity = defaultSecurity;
     }
+
+    public JsonType getJsonType() {
+        return jsonType;
+    }
+
+    public void setJsonType(JsonType jsonType) {
+        this.jsonType = jsonType;
+    }
+
+    enum JsonType {
+        GSON, JACKSON2
+    }
+
 }

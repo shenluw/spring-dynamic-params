@@ -18,3 +18,4 @@ sldp:
     bdog: top.shenluw.sldp.BDog
     cat: top.shenluw.sldp.Cat
   enable-security: true
+  json-type: jackson2

@@ -216,6 +216,8 @@ sldp:
   # 为类型设置别名
   type-alias:
       myName: top.shenluw.sldp.Dog
+  # 选择json解析方式，当前可用选项 gson, jackson2， 默认 jackson2
+  json-type: jackson2
 ~~~
 
 #### Jackson多态配置
