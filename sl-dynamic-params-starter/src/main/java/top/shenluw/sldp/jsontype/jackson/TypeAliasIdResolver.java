@@ -22,7 +22,9 @@ public class TypeAliasIdResolver extends ClassNameIdResolver {
 
     @Override
     public String idFromValue(Object value) {
-        return resolver.typeToName(value.getClass().getName());
+        String name = resolver.typeToName(value.getClass().getName());
+        if (name == null) return super.idFromValue(value);
+        return name;
     }
 
     @Override
