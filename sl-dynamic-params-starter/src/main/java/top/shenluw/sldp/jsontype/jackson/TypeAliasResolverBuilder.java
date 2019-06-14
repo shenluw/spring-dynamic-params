@@ -1,10 +1,12 @@
 package top.shenluw.sldp.jsontype.jackson;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
+import top.shenluw.sldp.SldpProperties;
 import top.shenluw.sldp.TypeNameAliasResolver;
 
 import java.util.Collection;
@@ -16,8 +18,24 @@ import java.util.Collection;
 public class TypeAliasResolverBuilder extends StdTypeResolverBuilder {
     private TypeNameAliasResolver resolver;
 
-    public TypeAliasResolverBuilder(TypeNameAliasResolver resolver) {
+    private String typeProperty;
+
+    public TypeAliasResolverBuilder(TypeNameAliasResolver resolver, SldpProperties properties) {
         this.resolver = resolver;
+        typeProperty = properties.getTypePropertyName();
+    }
+
+    @Override
+    public StdTypeResolverBuilder init(JsonTypeInfo.Id idType, TypeIdResolver idRes) {
+        super.init(idType, idRes);
+        _typeProperty = typeProperty;
+        return this;
+    }
+
+    @Override
+    public StdTypeResolverBuilder typeProperty(String typeIdPropName) {
+        _typeProperty = typeProperty;
+        return this;
     }
 
     @Override

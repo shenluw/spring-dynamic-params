@@ -7,4 +7,5 @@ package top.shenluw.sldp;
 public interface Constants {
     String TYPE_NAME = "sldp";
     String JSON_DATA_NAME = "sldpJson";
+    String DEFAULT_JSON_TYPE_PROPERTY_NAME = "@type";
 }

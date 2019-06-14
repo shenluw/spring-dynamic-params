@@ -21,6 +21,8 @@ public class SldpProperties {
     private String defaultProcessor = WebDataBinderDynamicParamsMethodProcessor.class.getName();
     private Map<String, String> typeAlias = new HashMap<>();
     private JsonType jsonType = JsonType.JACKSON2;
+    /* json多态使用时输出的类型字段 */
+    private String typePropertyName = Constants.DEFAULT_JSON_TYPE_PROPERTY_NAME;
 
     public boolean isEnable() {
         return enable;
@@ -84,6 +86,14 @@ public class SldpProperties {
 
     public void setJsonType(JsonType jsonType) {
         this.jsonType = jsonType;
+    }
+
+    public String getTypePropertyName() {
+        return typePropertyName;
+    }
+
+    public void setTypePropertyName(String typePropertyName) {
+        this.typePropertyName = typePropertyName;
     }
 
     enum JsonType {

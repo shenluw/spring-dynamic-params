@@ -49,6 +49,11 @@
       "name": "sldp.type-name",
       "type": "java.lang.String",
       "sourceType": "top.shenluw.sldp.SldpProperties"
+    },
+    {
+      "name": "sldp.type-property-name",
+      "type": "java.lang.String",
+      "sourceType": "top.shenluw.sldp.SldpProperties"
     }
   ],
   "hints": []
