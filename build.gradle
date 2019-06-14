@@ -18,6 +18,7 @@ subprojects {
 
     repositories {
         maven { url 'http://maven.aliyun.com/mvn/repository/' }
+        maven { url 'https://artifactory.cronapp.io/public-release/' }
         mavenCentral()
     }
 

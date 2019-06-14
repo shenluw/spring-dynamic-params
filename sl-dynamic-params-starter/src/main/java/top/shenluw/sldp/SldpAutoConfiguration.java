@@ -14,6 +14,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.shenluw.sldp.encrypt.B64Encryptor;
+import top.shenluw.sldp.jsontype.gson.RuntimeTypeGsonBuilderCustomizer;
 import top.shenluw.sldp.processor.GsonDynamicParamsMethodProcessor;
 import top.shenluw.sldp.processor.JacksonDynamicParamsMethodProcessor;
 import top.shenluw.sldp.processor.JsonDynamicParamsMethodProcessor;
@@ -106,6 +107,11 @@ public class SldpAutoConfiguration {
             configureDynamicParamsMethodProcessor(processor, aliasResolver);
             configureSecurity(processor);
             return processor;
+        }
+
+        @Bean
+        public RuntimeTypeGsonBuilderCustomizer runtimeTypeGsonBuilderCustomizer() {
+            return new RuntimeTypeGsonBuilderCustomizer(sldpProperties.getTypeAlias(), sldpProperties.getTypePropertyName());
         }
     }
 

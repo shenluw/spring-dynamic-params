@@ -1,7 +1,7 @@
 package top.shenluw.sldp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.bcel.internal.generic.FieldGenOrMethodGen;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import top.shenluw.sldp.encrypt.B64Encryptor;
 
-import javax.validation.constraints.Min;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -36,6 +35,10 @@ class MvcTest {
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
+    @Autowired(required = false)
+    Gson         gson;
+    @Autowired(required = false)
+    SldpProperties properties;
 
     @BeforeEach
     void setUp() {
@@ -197,7 +200,38 @@ class MvcTest {
 
     @Test
     void test13() throws Exception {
+        String json = objectMapper.writeValueAsString(createMix());
+        mockMvc.perform(MockMvcRequestBuilders.get("/5")
+                .param("sldpJson", json)
+                .param("sldp", "mixName")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Mix\",\"obj\":" + json + "}"))
+                .andDo(print());
+    }
 
+    @Test
+    void test14() throws Exception {
+        if (gson == null) {
+            System.out.println("ignore gson test");
+            return;
+        }
+        if (properties.getJsonType() != SldpProperties.JsonType.GSON){
+            System.out.println("ignore gson test");
+            return;
+        }
+        String json = gson.toJson(createMix());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/5")
+                .param("sldpJson", json)
+                .param("sldp", "mixName")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Mix\",\"obj\":" + json + "}"))
+                .andDo(print());
+    }
+
+    Mix createMix() {
         Mix mix = new Mix();
         mix.setName("mix name");
         mix.setAge(12);
@@ -215,16 +249,7 @@ class MvcTest {
         mix.setCat(cat);
         mix.setDog(dog);
         mix.setAnimals(Arrays.asList(cat, dog));
-
-        String json = objectMapper.writeValueAsString(mix);
-        System.out.println(json);
-        mockMvc.perform(MockMvcRequestBuilders.get("/5")
-                .param("sldpJson", json)
-                .param("sldp", "mixName")
-                .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Mix\",\"obj\":" + json + "}"))
-                .andDo(print());
+        return mix;
     }
 
 }

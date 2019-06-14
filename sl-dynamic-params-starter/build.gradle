@@ -11,5 +11,6 @@ bootJar {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'com.google.code.gson:gson:2.8.5'
+    compileOnly 'com.google.code.gson:gson-extras:2.8.5'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }

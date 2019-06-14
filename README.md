@@ -18,6 +18,8 @@ dependencies {
         // compile 'com.gitee.luws:spring-dynamic-params:Tag'
         // 版本号查看仓库tag
         implementation 'com.gitee.luws:spring-dynamic-params:0.1.3'
+        // 也可以使用GitHub
+        // implementation 'com.github.shenluw:spring-dynamic-params:0.1.3'
 }
 ~~~
 
@@ -218,6 +220,8 @@ sldp:
       myName: top.shenluw.sldp.Dog
   # 选择json解析方式，当前可用选项 gson, jackson2， 默认 jackson2
   json-type: jackson2
+  # Json解析多态时选择把class类型写入json的属性
+  type-property-name: "@custom"
 ~~~
 
 #### Jackson多态配置
@@ -230,5 +234,19 @@ public class Mix extends Animal {
     @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
     @JsonTypeResolver(TypeAliasResolverBuilder.class)
     private Animal dog;
+}
+~~~
+
+#### Gson多态配置
+
+使用Gson多态需要额外添加如下依赖，同时必须要配置type-alias关系才能正常使用
+~~~groovy
+
+repositories {
+    ...
+    maven { url 'https://artifactory.cronapp.io/public-release/' }
+}
+dependencies {
+    compileOnly 'com.google.code.gson:gson-extras:2.8.5'
 }
 ~~~

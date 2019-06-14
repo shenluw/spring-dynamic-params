@@ -25,11 +25,11 @@ public class TestController {
     private final static Logger log = getLogger(TestController.class);
 
     public static class M {
-        public Class clazz;
+        public String clazz;
         public Object obj;
 
         public M(Object obj) {
-            this.clazz = obj.getClass();
+            this.clazz = obj.getClass().getName();
             this.obj = obj;
         }
     }

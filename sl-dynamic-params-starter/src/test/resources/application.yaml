@@ -19,3 +19,4 @@ sldp:
     cat: top.shenluw.sldp.Cat
   enable-security: true
   json-type: jackson2
+  type-property-name: "@custom"
