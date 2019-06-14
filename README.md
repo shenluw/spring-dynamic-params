@@ -217,3 +217,16 @@ sldp:
   type-alias:
       myName: top.shenluw.sldp.Dog
 ~~~
+
+#### Jackson多态配置
+
+可以在字段或者类上配置 @JsonTypeInfo,如果要直接使用配置文件中的type-alias，则需要添加 @JsonTypeResolver(TypeAliasResolverBuilder.class)
+
+~~~java
+public class Mix extends Animal {
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+    @JsonTypeResolver(TypeAliasResolverBuilder.class)
+    private Animal dog;
+}
+~~~

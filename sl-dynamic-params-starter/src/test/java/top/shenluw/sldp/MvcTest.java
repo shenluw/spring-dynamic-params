@@ -1,5 +1,7 @@
 package top.shenluw.sldp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.bcel.internal.generic.FieldGenOrMethodGen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +15,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import top.shenluw.sldp.encrypt.B64Encryptor;
 
+import javax.validation.constraints.Min;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -30,6 +34,8 @@ class MvcTest {
     @Autowired
     private WebApplicationContext context;
     MockMvc mockMvc;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -186,6 +192,38 @@ class MvcTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Dog\",\"obj\":{\"name\":\"test name\",\"age\":12}}"))
+                .andDo(print());
+    }
+
+    @Test
+    void test13() throws Exception {
+
+        Mix mix = new Mix();
+        mix.setName("mix name");
+        mix.setAge(12);
+
+        Cat cat = new Cat();
+
+        cat.setName("cat name");
+        cat.setSpeed("fast");
+
+        BDog dog = new BDog();
+        dog.setHeight("1234");
+        dog.setName("bdog name");
+        dog.setFace("big");
+
+        mix.setCat(cat);
+        mix.setDog(dog);
+        mix.setAnimals(Arrays.asList(cat, dog));
+
+        String json = objectMapper.writeValueAsString(mix);
+        System.out.println(json);
+        mockMvc.perform(MockMvcRequestBuilders.get("/5")
+                .param("sldpJson", json)
+                .param("sldp", "mixName")
+                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"clazz\":\"top.shenluw.sldp.Mix\",\"obj\":" + json + "}"))
                 .andDo(print());
     }
 

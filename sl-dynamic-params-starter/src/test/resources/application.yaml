@@ -14,4 +14,7 @@ spring:
 sldp:
   type-alias:
     myName: top.shenluw.sldp.Dog
+    mixName: top.shenluw.sldp.Mix
+    bdog: top.shenluw.sldp.BDog
+    cat: top.shenluw.sldp.Cat
   enable-security: true

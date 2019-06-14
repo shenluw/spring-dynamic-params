@@ -9,14 +9,20 @@ import java.util.Map;
  */
 public class TypeNameAliasResolver {
 
-    private Map<String, String> aliasMap = new HashMap<>(32);
+    private final Map<String, String> aliasMap = new HashMap<>(32);
+    private final Map<String, String> typeMap = new HashMap<>(32);
 
     public TypeNameAliasResolver(Map<String, String> aliasMap) {
         this.aliasMap.putAll(aliasMap);
+        aliasMap.forEach((name, type) -> typeMap.put(type, name));
     }
 
     public String resolver(String origin) {
         return aliasMap.getOrDefault(origin, origin);
+    }
+
+    public String typeToName(String className) {
+        return typeMap.get(className);
     }
 
     public void add(String alias, String type) {
